@@ -1,0 +1,538 @@
+from pylab import *
+import numpy as np
+import random
+from random import shuffle
+
+
+def dictionary1(num):
+
+    sentences = num
+    sequence = []
+
+
+    # verbs
+    verbs = ['eats ', 'drinks ']
+
+    # subjects and objects
+    subjects = ['man ','woman ','girl ','boy ','child ','cat ','dog ','fox ']
+    eat = ['meat. ','bread. ','fish. ','vegetables. ']
+    drink = ['milk. ','water. ','juice. ','tea. ']
+    objects = [eat, drink]
+
+    for i in range(sentences):
+
+        # pick a subject
+        randSUB = randint(0,len(subjects))
+        SUB = subjects[randSUB]
+
+        # Pick a verb
+        randVERB = randint(0,2)
+        VERB = verbs[randVERB]
+
+        # Pick an object
+        if randVERB == 0: # eat
+            OB = objects[0][randint(0,len(objects[0]))]
+        elif randVERB == 1: # drink
+            OB = objects[1][randint(0,len(objects[1]))]
+
+        # create string
+        letterstring_pre = SUB + VERB + OB
+        sequence.append(letterstring_pre)
+
+    #---------------------------------------------#
+    # excluding sentences
+    while 'woman drinks milk. ' in sequence:
+        sequence.remove('woman drinks milk. ')
+    while 'fox drinks tea. ' in sequence:
+        sequence.remove('fox drinks tea. ')
+    while 'cat eats vegetables. ' in sequence:
+        sequence.remove('cat eats vegetables. ')
+
+    while 'girl eats meat. ' in sequence:
+        sequence.remove('girl eats meat. ')
+    while 'child eats fish. ' in sequence:
+        sequence.remove('child eats fish. ')
+    while 'boy drinks juice. ' in sequence:
+        sequence.remove('boy drinks juice. ')
+
+    while 'man drinks water. ' in sequence:
+        sequence.remove('man drinks water. ')
+    while 'dog eats bread. ' in sequence:
+        sequence.remove('dog eats bread. ')
+
+    while 'woman eats meat. ' in sequence:
+        sequence.remove('woman eats meat. ')
+    while 'fox eats bread. ' in sequence:
+        sequence.remove('fox eats bread. ')
+    while 'cat drinks tea. ' in sequence:
+        sequence.remove('cat drinks tea. ')
+    while 'girl drinks juice. ' in sequence:
+        sequence.remove('girl drinks juice. ')
+    while 'child drinks water. ' in sequence:
+        sequence.remove('child drinks water. ')
+    while 'boy eats fish. ' in sequence:
+        sequence.remove('boy eats fish. ')
+    while 'man eats vegetables. ' in sequence:
+        sequence.remove('man eats vegetables. ')
+    while 'dog drinks milk. ' in sequence:
+        sequence.remove('dog drinks milk. ')
+    #----------------------------------------------#
+
+    return sequence
+
+
+
+
+def create_sentence(N_E,N_U):
+
+    sequence = dictionary1(100)
+
+    letters = 28
+
+    W_eu_pre = zeros((N_E,letters))
+    for i in range(letters):
+        W_eu_pre[i*N_U:(i+1)*N_U, i] = 1
+
+    alphabet = zeros((N_E,letters))
+
+    for i in range(letters):
+        alphabet[:,i] = W_eu_pre[:,i]
+
+    alphabet2 = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',' ','.']
+
+    letterstring = []
+
+    for sentence in sequence:
+        for letter in sentence:
+            for i in range(len(alphabet2)):
+                    if letter == alphabet2[i]:
+                        letterstring.append(alphabet[:,i])
+
+    return letterstring[0:len(sequence[0])], sequence[0]
+
+
+
+
+def create_sentence2(N_E,N_U,num):
+
+    sentences = num
+
+
+    sequence = []
+
+    # verbs
+    verb_people = ['sees ','hears ','likes ','teases ']
+    verb_animal = ['sees ','hears ', 'loves ','chases ',]
+    verb_food = ['eats ','makes ','cooks ']
+
+
+    # subjects and objects
+    people_sub = ['man ','woman ','girl ','boy ','child ']
+    animal_sub = ['cat ','dog ','fox ']
+
+    people_ob = ['man. ','woman. ','girl. ','boy. ','child. ']
+    animal_ob = ['cat. ','dog. ','fox. ']
+    food = ['fish. ','bread. ','pasta. ']
+
+
+
+    subject = [people_sub, animal_sub]
+
+    object = [people_ob, animal_ob, food]
+
+    verb = [verb_people, verb_animal, verb_food]
+
+
+    for i in range(sentences):
+
+        # pick a subject
+        a = random.randint(0,len(subject)-1)
+        b = random.randint(0,len(subject[a])-1)
+
+        SUB = subject[a][b]
+
+
+        # Pick a verb
+        if a == 0:
+            rn = random.randint(0,1)
+            if rn == 0:
+                VERB = verb[0][random.randint(0,len(verb[0])-1)]
+            else:
+                VERB = verb[2][random.randint(0,len(verb[2])-1)]
+        elif a == 1:
+            VERB = verb[1][random.randint(0,len(verb[1])-1)]
+
+
+        # Pick an object
+        e = random.randint(0,1)
+
+        if VERB in verb[1]:
+            OB = object[e][random.randint(0,len(object[e])-1)]
+
+        elif VERB in verb[0]:
+            OB = object[e][random.randint(0,len(object[e])-1)]
+
+        elif VERB in verb[2]:
+            OB = object[2][random.randint(0,len(object[2])-1)]
+
+
+        # create string
+        letterstring_pre = SUB + VERB + OB
+
+        sequence.append(letterstring_pre)
+
+
+
+    letters = 28
+
+    N_E = N_U * letters
+
+
+    W_eu_pre = zeros((N_E,letters))
+    for i in range(letters):
+        W_eu_pre[i*N_U:(i+1)*N_U, i] = 1
+
+
+    alphabet = zeros((N_E,letters))
+
+    for i in range(letters):
+        alphabet[:,i] = W_eu_pre[:,i]
+
+    alphabet2 = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',' ','.']
+
+
+    letterstring = []
+
+
+    for sentence in sequence:
+        for letter in sentence:
+            for i in range(len(alphabet2)):
+                    if letter == alphabet2[i]:
+                        letterstring.append(alphabet[:,i])
+
+
+    return letterstring, sequence
+
+
+
+def create_sentence_SUB_OB(N_E,N_U,num):
+
+    sentences = num
+
+
+    sequence = []
+
+
+    # verbs
+    verbs = ['eats ', 'drinks ']
+
+    # subjects and objects
+    subjects = ['man ','woman ','girl ','boy ','child ','cat ','dog ','fox ']
+    objects = ['man. ','woman. ','girl. ','boy. ','child. ','cat. ','dog. ','fox. ']
+
+
+
+    for i in range(sentences):
+
+        # pick a subject
+        randSUB = randint(0,len(subjects))
+        SUB = subjects[randSUB]
+
+
+        # Pick a verb
+        if randSUB <= 3:
+            VERB = verbs[0]
+        elif randSUB > 3:
+            VERB = verbs[1]
+
+        # Pick an object
+        OB = objects[randint(0,len(objects))]
+
+
+        # create string
+        letterstring_pre = SUB + VERB + OB
+
+        sequence.append(letterstring_pre)
+
+
+
+
+
+    letters = 28
+
+    W_eu_pre = zeros((N_E,letters))
+    for i in range(letters):
+        W_eu_pre[i*N_U:(i+1)*N_U, i] = 1
+
+
+    alphabet = zeros((N_E,letters))
+
+    for i in range(letters):
+        alphabet[:,i] = W_eu_pre[:,i]
+
+    alphabet2 = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',' ','.']
+
+
+    letterstring = []
+
+
+    for sentence in sequence:
+        for letter in sentence:
+            for i in range(len(alphabet2)):
+                    if letter == alphabet2[i]:
+                        letterstring.append(alphabet[:,i])
+
+
+    return letterstring, sequence
+
+
+
+
+def create_sentence_plural_singular(N_E,N_U,num):
+
+    sentences = num
+
+
+    sequence = []
+
+
+
+    # subjects
+    #subjects_singular = ['dog ', 'cat ']
+    #subjects_plural = ['dogs ', 'cats ']
+    subjects_singular = ['dog ', 'cat ', 'pig ', 'bird ', 'sun ', 'fish ', 'wind ', 'monkey ', 'horse ', 'lion ', 'elefant ', 'duck ']
+    subjects_plural = ['dogs ', 'cats ', 'pigs ', 'birds ', 'suns ', 'fishs ', 'winds ', 'monkeys ', 'horses ', 'lions ', 'elefants ', 'ducks ']
+    subjects = [subjects_singular, subjects_plural]
+
+    # verbs
+    #verbs_singular = ['barks. ', 'meows. ']
+    #verbs_plural =  ['bark. ', 'meow. ']
+    verbs_singular = ['barks. ', 'meows. ', 'oinks. ', 'sings. ', 'shines. ', 'swims. ', 'blows. ', 'climbs. ', 'gallops. ', 'hunts. ', 'toots. ', 'quacks. ']
+    verbs_plural =  ['bark. ', 'meow. ', 'oink. ', 'sing. ', 'shine. ', 'swim. ', 'blow. ', 'climb. ', 'gallop. ', 'hunt. ', 'toot. ', 'quack. ']
+    verbs = [verbs_singular, verbs_plural]
+
+
+    for i in range(sentences):
+
+        # subject singular or plural
+        randSUB = randint(0,len(subjects))
+        randSUB2 = randint(0,len(subjects[randSUB]))
+        SUB = subjects[randSUB][randSUB2]
+
+
+        # Pick a verb
+        if randSUB == 0:
+            if randSUB2 == 0:
+                VERB = verbs[0][0]
+            elif randSUB2 == 1:
+                VERB = verbs[0][1]
+            elif randSUB2 == 2:
+                VERB = verbs[0][2]
+            elif randSUB2 == 3:
+                VERB = verbs[0][3]
+            elif randSUB2 == 4:
+                VERB = verbs[0][4]
+            elif randSUB2 == 5:
+                VERB = verbs[0][5]
+            elif randSUB2 == 6:
+                VERB = verbs[0][6]
+            elif randSUB2 == 7:
+                VERB = verbs[0][7]
+            elif randSUB2 == 8:
+                VERB = verbs[0][8]
+            elif randSUB2 == 9:
+                VERB = verbs[0][9]
+            elif randSUB2 == 10:
+                VERB = verbs[0][10]
+            elif randSUB2 == 11:
+                VERB = verbs[0][11]
+            elif randSUB2 == 12:
+                VERB = verbs[0][12]
+        elif randSUB == 1:
+            if randSUB2 == 0:
+                VERB = verbs[1][0]
+            elif randSUB2 == 1:
+                VERB = verbs[1][1]
+            elif randSUB2 == 2:
+                VERB = verbs[1][2]
+            elif randSUB2 == 3:
+                VERB = verbs[1][3]
+            elif randSUB2 == 4:
+                VERB = verbs[1][4]
+            elif randSUB2 == 5:
+                VERB = verbs[1][5]
+            elif randSUB2 == 6:
+                VERB = verbs[1][6]
+            elif randSUB2 == 7:
+                VERB = verbs[1][7]
+            elif randSUB2 == 8:
+                VERB = verbs[1][8]
+            elif randSUB2 == 9:
+                VERB = verbs[1][9]
+            elif randSUB2 == 10:
+                VERB = verbs[1][10]
+            elif randSUB2 == 11:
+                VERB = verbs[1][11]
+            elif randSUB2 == 12:
+                VERB = verbs[1][12]
+
+        # create string
+        letterstring_pre = SUB + VERB
+
+        sequence.append(letterstring_pre)
+
+
+
+    letters = 28
+
+    W_eu_pre = zeros((N_E,letters))
+    for i in range(letters):
+        W_eu_pre[i*N_U:(i+1)*N_U, i] = 1
+
+
+    alphabet = zeros((N_E,letters))
+
+    for i in range(letters):
+        alphabet[:,i] = W_eu_pre[:,i]
+
+    alphabet2 = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',' ','.']
+
+
+    letterstring = []
+
+
+    for sentence in sequence:
+        for letter in sentence:
+            for i in range(len(alphabet2)):
+                    if letter == alphabet2[i]:
+                        letterstring.append(alphabet[:,i])
+
+
+    return letterstring, sequence
+
+
+
+def create_sentence_plural(N_E,N_U,num):
+
+    sentences = num
+
+
+    sequence = []
+
+
+    # verbs
+    verbs_singular = ['eats ', 'drinks ']
+    verbs_plural = ['eat ', 'drink ']
+    verbs = [verbs_singular, verbs_plural]
+
+
+    # subjects and objects
+    subjects_singular = ['man ','woman ','girl ','boy ','child ','cat ','dog ','fox ']
+    subjects_plural = ['men ','women ','girls ','boys ','children ','cats ','dogs ','foxes ']
+    subjects = [subjects_singular, subjects_plural]
+
+    eat = ['meat. ','bread. ','fish. ','vegetables. ']
+    drink = ['milk. ','water. ','juice. ','tea. ']
+    objects = [eat, drink]
+
+
+
+
+    for i in range(sentences):
+
+        # pick a subject, plural or singular
+        randSUB1 = randint(0,2)
+
+        if randSUB1 == 0:  # singular
+            SUB = subjects_singular[randint(0,len(subjects_singular))]
+            randVERB = randint(0,2)
+            VERB = verbs_singular[randVERB]
+            if randVERB == 0: # eat
+                OB = objects[0][randint(0,len(objects[0]))]
+            elif randVERB == 1: #drink
+                OB = objects[1][randint(0,len(objects[1]))]
+
+        elif randSUB1 == 1: #plural
+            SUB = subjects_plural[randint(0,len(subjects_plural))]
+            randVERB = randint(0,2)
+            VERB = verbs_plural[randVERB]
+            if randVERB == 0: # eat
+                OB = objects[0][randint(0,len(objects[0]))]
+            elif randVERB == 1: #drink
+                OB = objects[1][randint(0,len(objects[1]))]
+
+
+        # create string
+        letterstring_pre = SUB + VERB + OB
+
+        sequence.append(letterstring_pre)
+
+
+
+    letters = 28
+
+    W_eu_pre = zeros((N_E,letters))
+    for i in range(letters):
+        W_eu_pre[i*N_U:(i+1)*N_U, i] = 1
+
+
+    alphabet = zeros((N_E,letters))
+
+    for i in range(letters):
+        alphabet[:,i] = W_eu_pre[:,i]
+
+    alphabet2 = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',' ','.']
+
+
+    letterstring = []
+
+
+    for sentence in sequence:
+        for letter in sentence:
+            for i in range(len(alphabet2)):
+                    if letter == alphabet2[i]:
+                        letterstring.append(alphabet[:,i])
+
+
+    return letterstring, sequence
+
+
+
+def CHILD_corpus_string(N_E,N_U):
+
+
+    STR = open("CHILD_corpus_simple.txt").read()
+    sequence = STR[0:5000]
+
+    letters = 33
+
+    W_eu_pre = zeros((N_E,letters))
+    for i in range(letters):
+        W_eu_pre[i*N_U:(i+1)*N_U, i] = 1
+
+
+    alphabet = zeros((N_E,letters))
+
+    for i in range(letters):
+        alphabet[:,i] = W_eu_pre[:,i]
+
+    alphabet2 = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"," ",".","!","?",",","'","-"]
+
+
+    letterstring = []
+
+    #for sentence in sequence:
+    for letter in sequence:
+        for i in range(len(alphabet2)):
+                if letter == alphabet2[i]:
+                    letterstring.append(alphabet[:,i])
+
+
+    ## change x and y axis
+    #letterstring2 = zeros((N_E,len(letterstring)))
+
+    #for i in range(shape(letterstring)[0]):
+        #letterstring2[:,i] = letterstring[i]
+
+
+    return letterstring, sequence
